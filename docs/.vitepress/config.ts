@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  // 關鍵修正：解決 GitHub Pages 樣式走樣與 404 找不到 CSS/JS 的問題
+  base: '/my-docs/',
+
   title: "我的文件庫",
   description: "多文章範例",
   themeConfig: {
