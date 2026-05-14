@@ -1,14 +1,18 @@
-name: Deploy to GitHub Pages
+name: Deploy VitePress site to Pages
 
 on:
   push:
     branches:
-      - main # 當 main 分支有 push 時觸發
+      - main
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -17,22 +21,31 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 如果是 React/Vue 等前端專案，請取消下方三行的註解來進行打包
-      # - name: Install and Build
-      #   run: |
-      #     npm install
-      #     npm run build
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
+
+      # 使用 npm install 避免 package-lock 不一致導致 npm ci 噴錯
+      - name: Install dependencies
+        run: npm install
+
+      # 根據你的 package.json 修改為 npm run build
+      - name: Build with VitePress
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # 如果有 build，請改成你的輸出資料夾（例如 'dist' 或 'build'）
+          path: docs/.vitepress/dist
 
       - name: Deploy to GitHub Pages
         id: deployment
