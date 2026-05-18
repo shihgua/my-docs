@@ -6,7 +6,7 @@ export default defineConfig({
   // 如果你的 GitHub repo 名稱不是 vitepress-hackmd-book，請改成你的 repo 名稱。
   // 例如你的網址是 https://你的帳號.github.io/my-blog/
   // 那這裡就要填：base: '/my-blog/'
-  base: '/docs_test/',
+  base: '/my-docs/',
 
   // 網站標題，會顯示在左上角與瀏覽器分頁
   title: '網站建立教學',
